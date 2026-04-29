@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { gameContent } from '@/lib/content-en';
@@ -13,6 +13,8 @@ interface CrosswordCell {
   isBlack: boolean;
 }
 
+const STORAGE_KEY = 'crossword_state';
+
 export const Crossword: React.FC<CrosswordProps> = ({ onComplete }) => {
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
   const [showResults, setShowResults] = useState(false);
@@ -23,6 +25,27 @@ export const Crossword: React.FC<CrosswordProps> = ({ onComplete }) => {
     ...crosswordData.clues.horizontal,
     ...crosswordData.clues.vertical,
   ];
+
+  // Load state from localStorage on mount
+  useEffect(() => {
+    const savedState = localStorage.getItem(STORAGE_KEY);
+    if (savedState) {
+      try {
+        const { userAnswers: saved, showResults: saved_showResults, score: saved_score } = JSON.parse(savedState);
+        setUserAnswers(saved);
+        setShowResults(saved_showResults);
+        setScore(saved_score);
+      } catch (e) {
+        console.error('Failed to load saved state:', e);
+      }
+    }
+  }, []);
+
+  // Save state to localStorage whenever it changes
+  useEffect(() => {
+    const state = { userAnswers, showResults, score };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }, [userAnswers, showResults, score]);
 
   const handleInputChange = (clueId: string, value: string) => {
     setUserAnswers(prev => ({
@@ -50,6 +73,8 @@ export const Crossword: React.FC<CrosswordProps> = ({ onComplete }) => {
   const handleComplete = () => {
     if (onComplete) {
       onComplete(score);
+      // Clear state after completion
+      localStorage.removeItem(STORAGE_KEY);
     }
   };
 
@@ -57,6 +82,7 @@ export const Crossword: React.FC<CrosswordProps> = ({ onComplete }) => {
     setUserAnswers({});
     setShowResults(false);
     setScore(0);
+    localStorage.removeItem(STORAGE_KEY);
   };
 
   return (
@@ -176,7 +202,7 @@ export const Crossword: React.FC<CrosswordProps> = ({ onComplete }) => {
                 variant="outline"
                 className="border-purple-500 text-purple-700 hover:bg-purple-50"
               >
-                Try Again
+                Restart
               </Button>
             </>
           )}

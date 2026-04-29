@@ -12,18 +12,36 @@ interface Cell {
   found: boolean;
 }
 
+const STORAGE_KEY = 'wordsearch_state';
+
 export const WordSearch: React.FC<WordSearchProps> = ({ onComplete }) => {
   const [grid, setGrid] = useState<Cell[][]>([]);
   const [foundWords, setFoundWords] = useState<Set<string>>(new Set());
   const [selectedCells, setSelectedCells] = useState<Array<[number, number]>>([]);
   const [score, setScore] = useState(0);
+  const [gridInitialized, setGridInitialized] = useState(false);
 
   const wordSearchData = gameContent.wordGames.wordSearch;
   const words = wordSearchData.words;
   const gridSize = wordSearchData.gridSize;
 
-  // Initialize grid
+  // Initialize grid and load saved state
   useEffect(() => {
+    const savedState = localStorage.getItem(STORAGE_KEY);
+    if (savedState) {
+      try {
+        const { grid: savedGrid, foundWords: savedFoundWords, score: savedScore } = JSON.parse(savedState);
+        setGrid(savedGrid);
+        setFoundWords(new Set(savedFoundWords));
+        setScore(savedScore);
+        setGridInitialized(true);
+        return;
+      } catch (e) {
+        console.error('Failed to load saved state:', e);
+      }
+    }
+
+    // Initialize new grid if no saved state
     const newGrid: Cell[][] = [];
     const usedPositions = new Set<string>();
 
@@ -41,7 +59,7 @@ export const WordSearch: React.FC<WordSearchProps> = ({ onComplete }) => {
       let attempts = 0;
 
       while (!placed && attempts < 100) {
-        const direction = Math.floor(Math.random() * 4); // 0: horizontal, 1: vertical, 2: diagonal, 3: diagonal
+        const direction = Math.floor(Math.random() * 4);
         const row = Math.floor(Math.random() * gridSize);
         const col = Math.floor(Math.random() * gridSize);
 
@@ -52,16 +70,15 @@ export const WordSearch: React.FC<WordSearchProps> = ({ onComplete }) => {
           let r = row;
           let c = col;
 
-          if (direction === 0) c += i; // horizontal
-          else if (direction === 1) r += i; // vertical
+          if (direction === 0) c += i;
+          else if (direction === 1) r += i;
           else if (direction === 2) {
             r += i;
             c += i;
-          } // diagonal down-right
-          else {
+          } else {
             r += i;
             c -= i;
-          } // diagonal down-left
+          }
 
           if (r >= gridSize || c >= gridSize || c < 0) {
             canPlace = false;
@@ -101,7 +118,20 @@ export const WordSearch: React.FC<WordSearchProps> = ({ onComplete }) => {
     }
 
     setGrid(newGrid);
+    setGridInitialized(true);
   }, []);
+
+  // Save state to localStorage whenever it changes
+  useEffect(() => {
+    if (gridInitialized) {
+      const state = {
+        grid,
+        foundWords: Array.from(foundWords),
+        score
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+  }, [grid, foundWords, score, gridInitialized]);
 
   const handleCellClick = (row: number, col: number) => {
     setSelectedCells(prev => {
@@ -154,7 +184,17 @@ export const WordSearch: React.FC<WordSearchProps> = ({ onComplete }) => {
         (foundWords.size / words.length) * 100
       );
       onComplete(percentage);
+      // Clear state after completion
+      localStorage.removeItem(STORAGE_KEY);
     }
+  };
+
+  const handleReset = () => {
+    setGrid([]);
+    setFoundWords(new Set());
+    setScore(0);
+    setGridInitialized(false);
+    localStorage.removeItem(STORAGE_KEY);
   };
 
   const progress = foundWords.size / words.length;
@@ -264,6 +304,13 @@ export const WordSearch: React.FC<WordSearchProps> = ({ onComplete }) => {
             className="bg-green-600 hover:bg-green-700 text-white font-bold"
           >
             Complete
+          </Button>
+          <Button
+            onClick={handleReset}
+            variant="outline"
+            className="border-red-500 text-red-700 hover:bg-red-50"
+          >
+            Restart
           </Button>
         </div>
       </Card>

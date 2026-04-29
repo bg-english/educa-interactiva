@@ -17,6 +17,8 @@ const HANGMAN_STAGES = [
   '  +---+\n  |   |\n  O   |\n /|\\  |\n / \\  |\n      |\n=========',
 ];
 
+const STORAGE_KEY = 'hangman_state';
+
 export const Hangman: React.FC<HangmanProps> = ({ onComplete }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [guessedLetters, setGuessedLetters] = useState<Set<string>>(new Set());
@@ -45,6 +47,37 @@ export const Hangman: React.FC<HangmanProps> = ({ onComplete }) => {
     word.split('').every((letter: string) => guessedLetters.has(letter)) && !gameOver;
   const isLost = wrongGuesses >= maxWrong;
 
+  // Load state from localStorage on mount
+  useEffect(() => {
+    const savedState = localStorage.getItem(STORAGE_KEY);
+    if (savedState) {
+      try {
+        const { currentWordIndex: saved_idx, guessedLetters: saved_letters, gameOver: saved_gameOver, won: saved_won, score: saved_score, totalGames: saved_total } = JSON.parse(savedState);
+        setCurrentWordIndex(saved_idx);
+        setGuessedLetters(new Set(saved_letters));
+        setGameOver(saved_gameOver);
+        setWon(saved_won);
+        setScore(saved_score);
+        setTotalGames(saved_total);
+      } catch (e) {
+        console.error('Failed to load saved state:', e);
+      }
+    }
+  }, []);
+
+  // Save state to localStorage whenever it changes
+  useEffect(() => {
+    const state = {
+      currentWordIndex,
+      guessedLetters: Array.from(guessedLetters),
+      gameOver,
+      won,
+      score,
+      totalGames
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }, [currentWordIndex, guessedLetters, gameOver, won, score, totalGames]);
+
   useEffect(() => {
     if (isWon) {
       setWon(true);
@@ -72,6 +105,8 @@ export const Hangman: React.FC<HangmanProps> = ({ onComplete }) => {
       if (onComplete) {
         const finalScore = Math.round((score / totalGames) * 100);
         onComplete(finalScore);
+        // Clear state after completion
+        localStorage.removeItem(STORAGE_KEY);
       }
     }
   };
@@ -83,6 +118,7 @@ export const Hangman: React.FC<HangmanProps> = ({ onComplete }) => {
     setWon(false);
     setScore(0);
     setTotalGames(0);
+    localStorage.removeItem(STORAGE_KEY);
   };
 
   return (
@@ -179,7 +215,7 @@ export const Hangman: React.FC<HangmanProps> = ({ onComplete }) => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-3 justify-center">
+        <div className="flex gap-3 justify-center flex-wrap">
           {gameOver && currentWordIndex < hangmanData.length - 1 && (
             <Button
               onClick={handleNextWord}
