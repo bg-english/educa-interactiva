@@ -16,7 +16,7 @@ import Workshop from "./pages/Workshop";
 function Router() {
   return (
     <Switch>
-      <Route path={"/ "} component={Home} />
+      <Route path={"/"} component={Home} />
       <Route path={"/word-games"} component={WordGames} />
       <Route path={"/nutrition"} component={Nutrition} />
       <Route path={"/nervous-system"} component={NervousSystem} />
