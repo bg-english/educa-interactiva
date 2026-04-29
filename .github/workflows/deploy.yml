@@ -38,6 +38,9 @@ jobs:
       - name: Disable Jekyll
         run: touch dist/public/.nojekyll
 
+      - name: Verify build output
+        run: ls -la dist/public && ls -la dist/public/assets
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
