@@ -1,0 +1,261 @@
+export const gameContent = {
+  wordGames: {
+    crossword: {
+      title: "Crucigrama: Nutrición",
+      description: "Completa el crucigrama con palabras relacionadas a la nutrición",
+      clues: {
+        horizontal: [
+          { number: 1, clue: "Mineral importante para los huesos", answer: "CALCIO", length: 6 },
+          { number: 4, clue: "Vitamina que previene el escorbuto", answer: "VITAMINAC", length: 9 },
+          { number: 7, clue: "Macronutriente que proporciona energía", answer: "CARBOHIDRATO", length: 12 },
+          { number: 10, clue: "Grupo de alimentos de origen animal", answer: "PROTEINA", length: 8 }
+        ],
+        vertical: [
+          { number: 1, clue: "Proceso de descomposición de alimentos", answer: "DIGESTION", length: 9 },
+          { number: 2, clue: "Bebida esencial para la vida", answer: "AGUA", length: 4 },
+          { number: 3, clue: "Fruta rica en potasio", answer: "PLATANO", length: 7 },
+          { number: 5, clue: "Órgano que produce insulina", answer: "PANCREAS", length: 8 }
+        ]
+      }
+    },
+    wordSearch: {
+      title: "Sopa de Letras: Sistema Nervioso",
+      description: "Encuentra las palabras relacionadas al sistema nervioso central",
+      words: [
+        "CEREBRO",
+        "NEURONA",
+        "SINAPSIS",
+        "MEDULA",
+        "IMPULSO",
+        "NERVIO",
+        "CORTEZA",
+        "AXON",
+        "DENDRITA",
+        "RECEPTOR",
+        "NEUROTRANSMISOR",
+        "ENCEFALO"
+      ],
+      gridSize: 12,
+      difficulty: "medium"
+    },
+    hangman: [
+      {
+        word: "FOTOSINTESIS",
+        hint: "Proceso mediante el cual las plantas producen alimento",
+        category: "Biología"
+      },
+      {
+        word: "METABOLISMO",
+        hint: "Conjunto de reacciones químicas en el cuerpo",
+        category: "Nutrición"
+      },
+      {
+        word: "HOMEOSTASIS",
+        hint: "Capacidad del cuerpo de mantener el equilibrio interno",
+        category: "Fisiología"
+      },
+      {
+        word: "NEUROTRANSMISOR",
+        hint: "Sustancia química que transmite señales entre neuronas",
+        category: "Sistema Nervioso"
+      },
+      {
+        word: "GLUCOSA",
+        hint: "Azúcar simple que proporciona energía al cuerpo",
+        category: "Nutrición"
+      },
+      {
+        word: "AMINOACIDO",
+        hint: "Componente básico de las proteínas",
+        category: "Nutrición"
+      }
+    ]
+  },
+  nutrition: {
+    foodGroups: [
+      {
+        id: "grains",
+        name: "Granos",
+        color: "#D4A574",
+        examples: ["Arroz", "Pan", "Pasta", "Avena"],
+        portion: "6 onzas",
+        benefits: "Energía y fibra"
+      },
+      {
+        id: "vegetables",
+        name: "Verduras",
+        color: "#10B981",
+        examples: ["Brócoli", "Zanahoria", "Espinaca", "Tomate"],
+        portion: "2.5 tazas",
+        benefits: "Vitaminas y minerales"
+      },
+      {
+        id: "fruits",
+        name: "Frutas",
+        color: "#EF4444",
+        examples: ["Manzana", "Plátano", "Naranja", "Fresas"],
+        portion: "2 tazas",
+        benefits: "Vitaminas y antioxidantes"
+      },
+      {
+        id: "protein",
+        name: "Proteínas",
+        color: "#F59E0B",
+        examples: ["Pollo", "Huevo", "Legumbres", "Pescado"],
+        portion: "5.5 onzas",
+        benefits: "Crecimiento y reparación"
+      },
+      {
+        id: "dairy",
+        name: "Lácteos",
+        color: "#93C5FD",
+        examples: ["Leche", "Queso", "Yogur"],
+        portion: "3 tazas",
+        benefits: "Calcio y proteína"
+      }
+    ],
+    balancedPlate: {
+      description: "Un plato balanceado contiene porciones adecuadas de cada grupo de alimentos",
+      percentages: {
+        grains: 30,
+        vegetables: 30,
+        fruits: 20,
+        protein: 10,
+        dairy: 10
+      },
+      tips: [
+        "Llena la mitad de tu plato con frutas y verduras",
+        "Incluye granos integrales",
+        "Varía tus proteínas",
+        "Limita grasas saturadas y azúcares"
+      ]
+    }
+  },
+  nervousSystem: {
+    parts: [
+      {
+        id: "cerebro",
+        name: "Cerebro",
+        position: { x: 50, y: 15 },
+        description: "Centro de control del cuerpo. Controla pensamiento, memoria y emociones",
+        functions: ["Pensamiento", "Memoria", "Emociones", "Control motor"],
+        color: "#0EA5E9"
+      },
+      {
+        id: "cerebelo",
+        name: "Cerebelo",
+        position: { x: 50, y: 25 },
+        description: "Coordina el movimiento y el equilibrio",
+        functions: ["Equilibrio", "Coordinación", "Movimiento"],
+        color: "#06B6D4"
+      },
+      {
+        id: "tronco",
+        name: "Tronco Encefálico",
+        position: { x: 50, y: 35 },
+        description: "Conecta el cerebro con la médula espinal. Controla funciones vitales",
+        functions: ["Respiración", "Ritmo cardíaco", "Presión arterial"],
+        color: "#0891B2"
+      },
+      {
+        id: "medula",
+        name: "Médula Espinal",
+        position: { x: 50, y: 55 },
+        description: "Transmite señales entre el cerebro y el resto del cuerpo",
+        functions: ["Transmisión de señales", "Reflejos"],
+        color: "#0EA5E9"
+      },
+      {
+        id: "nervios",
+        name: "Nervios Periféricos",
+        position: { x: 30, y: 70 },
+        description: "Conectan el sistema nervioso central con el resto del cuerpo",
+        functions: ["Sensación", "Movimiento"],
+        color: "#06B6D4"
+      }
+    ],
+    quiz: [
+      {
+        question: "¿Cuál es la función principal del cerebro?",
+        options: [
+          "Bombear sangre",
+          "Controlar el pensamiento y la memoria",
+          "Digerir alimentos",
+          "Producir hormonas"
+        ],
+        correct: 1,
+        explanation: "El cerebro es el centro de control del cuerpo y controla el pensamiento, la memoria y las emociones."
+      },
+      {
+        question: "¿Qué parte del sistema nervioso transmite señales entre el cerebro y el cuerpo?",
+        options: [
+          "Cerebelo",
+          "Tronco encefálico",
+          "Médula espinal",
+          "Nervios periféricos"
+        ],
+        correct: 2,
+        explanation: "La médula espinal es la principal vía de comunicación entre el cerebro y el resto del cuerpo."
+      },
+      {
+        question: "¿Cuál es la función del cerebelo?",
+        options: [
+          "Controlar la respiración",
+          "Coordinar el movimiento y el equilibrio",
+          "Producir neurotransmisores",
+          "Almacenar memoria a largo plazo"
+        ],
+        correct: 1,
+        explanation: "El cerebelo es responsable de la coordinación del movimiento y el equilibrio del cuerpo."
+      },
+      {
+        question: "¿Qué son los neurotransmisores?",
+        options: [
+          "Células del sistema nervioso",
+          "Sustancias químicas que transmiten señales entre neuronas",
+          "Partes del cerebro",
+          "Tipos de nervios"
+        ],
+        correct: 1,
+        explanation: "Los neurotransmisores son sustancias químicas que permiten la comunicación entre neuronas."
+      }
+    ]
+  },
+  workshop: {
+    title: "Workshop Final de Evaluación",
+    description: "Demuestra lo que has aprendido en todos los módulos",
+    sections: [
+      {
+        id: "wordGamesSection",
+        title: "Juegos de Palabras",
+        weight: 25,
+        tasks: ["Crucigrama", "Sopa de Letras", "Ahorcado"]
+      },
+      {
+        id: "nutritionSection",
+        title: "Nutrición y Plato Balanceado",
+        weight: 25,
+        tasks: ["Armar plato balanceado", "Identificar grupos de alimentos"]
+      },
+      {
+        id: "nervousSystemSection",
+        title: "Sistema Nervioso Central",
+        weight: 25,
+        tasks: ["Identificar partes", "Responder preguntas"]
+      },
+      {
+        id: "finalQuiz",
+        title: "Quiz Final",
+        weight: 25,
+        tasks: ["Preguntas de opción múltiple"]
+      }
+    ],
+    passingScore: 70,
+    feedback: {
+      excellent: "¡Excelente trabajo! Demostraste dominar todos los temas",
+      good: "¡Muy bien! Tienes una buena comprensión de los temas",
+      fair: "Buen esfuerzo. Revisa los temas donde tuviste dificultades",
+      needsImprovement: "Necesitas repasar los temas. Intenta de nuevo"
+    }
+  }
+};

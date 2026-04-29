@@ -4,13 +4,23 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { GameProvider } from "./contexts/GameContext";
+import { UserProvider } from "./contexts/UserContext";
 import Home from "./pages/Home";
+import WordGames from "./pages/WordGames";
+import Nutrition from "./pages/Nutrition";
+import NervousSystem from "./pages/NervousSystem";
+import Workshop from "./pages/Workshop";
 
 
 function Router() {
   return (
     <Switch>
-      <Route path={"/"} component={Home} />
+      <Route path={"/ "} component={Home} />
+      <Route path={"/word-games"} component={WordGames} />
+      <Route path={"/nutrition"} component={Nutrition} />
+      <Route path={"/nervous-system"} component={NervousSystem} />
+      <Route path={"/workshop"} component={Workshop} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
@@ -30,10 +40,14 @@ function App() {
         defaultTheme="light"
         // switchable
       >
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
+        <UserProvider>
+          <GameProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Router />
+            </TooltipProvider>
+          </GameProvider>
+        </UserProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );
