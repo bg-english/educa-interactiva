@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { gameContent } from '@/lib/content';
+import { gameContent } from '@/lib/content-en';
 
 interface HangmanProps {
   onComplete?: (score: number) => void;
@@ -38,7 +38,7 @@ export const Hangman: React.FC<HangmanProps> = ({ onComplete }) => {
     .map((letter: string) => (guessedLetters.has(letter) ? letter : '_'))
     .join(' ');
 
-  const alphabet: string[] = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
+  const alphabet: string[] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   const availableLetters = alphabet.filter((letter: string) => !guessedLetters.has(letter));
 
   const isWon =
@@ -89,9 +89,9 @@ export const Hangman: React.FC<HangmanProps> = ({ onComplete }) => {
     <div className="w-full max-w-2xl mx-auto p-4">
       <Card className="p-6 bg-gradient-to-br from-green-50 to-emerald-50">
         <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-green-700 mb-2">Ahorcado</h2>
+          <h2 className="text-3xl font-bold text-green-700 mb-2">Hangman</h2>
           <p className="text-gray-600">
-            Palabra {currentWordIndex + 1} de {hangmanData.length}
+            Word {currentWordIndex + 1} of {hangmanData.length}
           </p>
         </div>
 
@@ -103,7 +103,7 @@ export const Hangman: React.FC<HangmanProps> = ({ onComplete }) => {
             </pre>
             <div className="text-center">
               <p className="text-sm font-semibold text-gray-700">
-                Errores: {wrongGuesses} / {maxWrong}
+                Mistakes: {wrongGuesses} / {maxWrong}
               </p>
               <div className="w-32 h-2 bg-gray-200 rounded-full mt-2 overflow-hidden">
                 <div
@@ -119,19 +119,19 @@ export const Hangman: React.FC<HangmanProps> = ({ onComplete }) => {
           {/* Game Info */}
           <div className="flex flex-col justify-center">
             <div className="mb-4">
-              <p className="text-sm text-gray-600 mb-2">Pista:</p>
+              <p className="text-sm text-gray-600 mb-2">Hint:</p>
               <p className="text-lg font-semibold text-green-700">
                 {currentGame.hint}
               </p>
             </div>
             <div className="mb-4">
-              <p className="text-sm text-gray-600 mb-2">Categoría:</p>
+              <p className="text-sm text-gray-600 mb-2">Category:</p>
               <p className="text-lg font-semibold text-green-700">
                 {currentGame.category}
               </p>
             </div>
             <div className="mb-4">
-              <p className="text-sm text-gray-600 mb-2">Puntuación:</p>
+              <p className="text-sm text-gray-600 mb-2">Score:</p>
               <p className="text-2xl font-bold text-green-700">
                 {score} / {totalGames > 0 ? totalGames * 100 : 0}
               </p>
@@ -156,14 +156,14 @@ export const Hangman: React.FC<HangmanProps> = ({ onComplete }) => {
             <p className={`text-xl font-bold ${
               won ? 'text-green-700' : 'text-red-700'
             }`}>
-              {won ? '¡Correcto! 🎉' : `¡Perdiste! La palabra era: ${word}`}
+              {won ? 'Correct! 🎉' : `You lost! The word was: ${word}`}
             </p>
           </div>
         )}
 
         {/* Letter Buttons */}
         <div className="mb-6">
-          <p className="text-sm font-semibold text-gray-700 mb-3">Selecciona letras:</p>
+          <p className="text-sm font-semibold text-gray-700 mb-3">Select letters:</p>
           <div className="grid grid-cols-7 gap-2">
             {availableLetters.map(letter => (
               <Button
@@ -185,7 +185,7 @@ export const Hangman: React.FC<HangmanProps> = ({ onComplete }) => {
               onClick={handleNextWord}
               className="bg-green-600 hover:bg-green-700 text-white font-bold"
             >
-              Siguiente Palabra
+              Next Word
             </Button>
           )}
           {gameOver && currentWordIndex === hangmanData.length - 1 && (
@@ -193,7 +193,7 @@ export const Hangman: React.FC<HangmanProps> = ({ onComplete }) => {
               onClick={handleNextWord}
               className="bg-green-600 hover:bg-green-700 text-white font-bold"
             >
-              Finalizar Ahorcado
+              Complete Hangman
             </Button>
           )}
           <Button
@@ -201,7 +201,7 @@ export const Hangman: React.FC<HangmanProps> = ({ onComplete }) => {
             variant="outline"
             className="border-green-500 text-green-700 hover:bg-green-50"
           >
-            Reiniciar
+            Restart
           </Button>
         </div>
       </Card>
