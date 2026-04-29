@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { BalancedPlate } from '@/components/nutrition/BalancedPlate';
+import { BalancedPlateInteractive } from '@/components/nutrition/BalancedPlateInteractive';
 import { FoodGroups } from '@/components/nutrition/FoodGroups';
 import { useUser } from '@/contexts/UserContext';
 import { useLocation } from 'wouter';
@@ -35,7 +35,7 @@ export default function Nutrition() {
             ← Volver al Menú
           </Button>
         </div>
-        <BalancedPlate onComplete={handleGameComplete} />
+        <BalancedPlateInteractive onComplete={handleGameComplete} />
       </div>
     );
   }

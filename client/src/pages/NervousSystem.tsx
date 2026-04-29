@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { NervousSystemDiagram } from '@/components/nervous/NervousSystemDiagram';
+import { NervousSystemInteractive } from '@/components/nervous/NervousSystemInteractive';
 import { NervousSystemQuiz } from '@/components/nervous/NervousSystemQuiz';
 import { useUser } from '@/contexts/UserContext';
 import { useLocation } from 'wouter';
@@ -35,7 +35,7 @@ export default function NervousSystem() {
             ← Volver al Menú
           </Button>
         </div>
-        <NervousSystemDiagram onComplete={handleGameComplete} />
+        <NervousSystemInteractive onComplete={handleGameComplete} />
       </div>
     );
   }
