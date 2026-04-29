@@ -13,20 +13,12 @@ export default function WordGames() {
   const [, setLocation] = useLocation();
 
   const handleGameComplete = (gameName: string, score: number) => {
-    // Store the score for this game
     console.log(`${gameName} completed with score: ${score}`);
-    
-    if (gameName === 'hangman') {
-      // After hangman, go back to menu
-      setCurrentGame('menu');
-    } else {
-      setCurrentGame('menu');
-    }
+    setCurrentGame('menu');
   };
 
   const handleModuleComplete = () => {
-    // Calculate average score from all games
-    const averageScore = 75; // Placeholder
+    const averageScore = 75;
     setModuleScore('wordGames', averageScore);
     addCompletedModule('wordGames');
     setLocation('/');
@@ -41,7 +33,7 @@ export default function WordGames() {
             variant="outline"
             className="mb-4"
           >
-            ← Volver al Menú
+            ← Back to Menu
           </Button>
         </div>
         <Crossword onComplete={(score) => handleGameComplete('crossword', score)} />
@@ -58,7 +50,7 @@ export default function WordGames() {
             variant="outline"
             className="mb-4"
           >
-            ← Volver al Menú
+            ← Back to Menu
           </Button>
         </div>
         <WordSearch onComplete={(score) => handleGameComplete('wordsearch', score)} />
@@ -75,7 +67,7 @@ export default function WordGames() {
             variant="outline"
             className="mb-4"
           >
-            ← Volver al Menú
+            ← Back to Menu
           </Button>
         </div>
         <Hangman onComplete={(score) => handleGameComplete('hangman', score)} />
@@ -83,15 +75,14 @@ export default function WordGames() {
     );
   }
 
-  // Menu
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 p-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Juegos de Palabras</h1>
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">Word Games</h1>
           <p className="text-lg text-gray-600">
-            Pon a prueba tus conocimientos con estos emocionantes juegos
+            Test your knowledge with these exciting games
           </p>
         </div>
 
@@ -102,15 +93,15 @@ export default function WordGames() {
             onClick={() => setCurrentGame('crossword')}>
             <div className="text-center">
               <div className="text-5xl mb-4">🔤</div>
-              <h2 className="text-2xl font-bold text-purple-700 mb-2">Crucigrama</h2>
+              <h2 className="text-2xl font-bold text-purple-700 mb-2">Crossword</h2>
               <p className="text-gray-700 mb-4">
-                Completa palabras relacionadas con nutrición usando las pistas proporcionadas.
+                Complete words related to nutrition using the provided clues.
               </p>
               <Button
                 onClick={() => setCurrentGame('crossword')}
                 className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold"
               >
-                Jugar Crucigrama
+                Play Crossword
               </Button>
             </div>
           </Card>
@@ -120,15 +111,15 @@ export default function WordGames() {
             onClick={() => setCurrentGame('wordsearch')}>
             <div className="text-center">
               <div className="text-5xl mb-4">🔍</div>
-              <h2 className="text-2xl font-bold text-blue-700 mb-2">Sopa de Letras</h2>
+              <h2 className="text-2xl font-bold text-blue-700 mb-2">Word Search</h2>
               <p className="text-gray-700 mb-4">
-                Encuentra todas las palabras del sistema nervioso escondidas en la cuadrícula.
+                Find all the nervous system words hidden in the grid.
               </p>
               <Button
                 onClick={() => setCurrentGame('wordsearch')}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold"
               >
-                Jugar Sopa de Letras
+                Play Word Search
               </Button>
             </div>
           </Card>
@@ -138,15 +129,15 @@ export default function WordGames() {
             onClick={() => setCurrentGame('hangman')}>
             <div className="text-center">
               <div className="text-5xl mb-4">🎮</div>
-              <h2 className="text-2xl font-bold text-green-700 mb-2">Ahorcado</h2>
+              <h2 className="text-2xl font-bold text-green-700 mb-2">Hangman</h2>
               <p className="text-gray-700 mb-4">
-                Adivina palabras científicas antes de que se termine el juego.
+                Guess scientific words before the game ends.
               </p>
               <Button
                 onClick={() => setCurrentGame('hangman')}
                 className="w-full bg-green-600 hover:bg-green-700 text-white font-bold"
               >
-                Jugar Ahorcado
+                Play Hangman
               </Button>
             </div>
           </Card>
@@ -159,13 +150,13 @@ export default function WordGames() {
             variant="outline"
             className="border-gray-400 text-gray-700 hover:bg-gray-100"
           >
-            ← Volver al Inicio
+            ← Back to Home
           </Button>
           <Button
             onClick={handleModuleComplete}
             className="bg-green-600 hover:bg-green-700 text-white font-bold"
           >
-            Completar Módulo →
+            Complete Module →
           </Button>
         </div>
       </div>

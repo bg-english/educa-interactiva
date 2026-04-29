@@ -12,12 +12,12 @@ export default function Nutrition() {
   const [, setLocation] = useLocation();
 
   const handleGameComplete = (score: number) => {
-    console.log(`Nutrición completed with score: ${score}`);
+    console.log(`Nutrition completed with score: ${score}`);
     setCurrentView('menu');
   };
 
   const handleModuleComplete = () => {
-    const averageScore = 80; // Placeholder
+    const averageScore = 80;
     setModuleScore('nutrition', averageScore);
     addCompletedModule('nutrition');
     setLocation('/');
@@ -32,7 +32,7 @@ export default function Nutrition() {
             variant="outline"
             className="mb-4"
           >
-            ← Volver al Menú
+            ← Back to Menu
           </Button>
         </div>
         <BalancedPlateInteractive onComplete={handleGameComplete} />
@@ -49,7 +49,7 @@ export default function Nutrition() {
             variant="outline"
             className="mb-4"
           >
-            ← Volver al Menú
+            ← Back to Menu
           </Button>
         </div>
         <FoodGroups />
@@ -57,15 +57,14 @@ export default function Nutrition() {
     );
   }
 
-  // Menu
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-red-50 p-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Nutrición y Plato Balanceado</h1>
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">Nutrition & Balanced Plate</h1>
           <p className="text-lg text-gray-600">
-            Aprende a crear comidas saludables y balanceadas
+            Learn to create healthy and balanced meals
           </p>
         </div>
 
@@ -75,16 +74,15 @@ export default function Nutrition() {
           <Card className="p-8 bg-gradient-to-br from-orange-100 to-red-100 hover:shadow-lg transition-shadow">
             <div className="text-center">
               <div className="text-6xl mb-4">🍽️</div>
-              <h2 className="text-2xl font-bold text-orange-700 mb-3">Plato Balanceado</h2>
+              <h2 className="text-2xl font-bold text-orange-700 mb-3">Balanced Plate</h2>
               <p className="text-gray-700 mb-6">
-                Arrastra alimentos al plato para crear una comida balanceada. Aprende qué proporciones
-                de cada grupo de alimentos necesitas para una nutrición óptima.
+                Drag foods to the plate to create a balanced meal. Learn what proportions of each food group you need for optimal nutrition.
               </p>
               <Button
                 onClick={() => setCurrentView('plate')}
                 className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3"
               >
-                Jugar Plato Balanceado
+                Play Balanced Plate
               </Button>
             </div>
           </Card>
@@ -93,16 +91,15 @@ export default function Nutrition() {
           <Card className="p-8 bg-gradient-to-br from-green-100 to-emerald-100 hover:shadow-lg transition-shadow">
             <div className="text-center">
               <div className="text-6xl mb-4">🥗</div>
-              <h2 className="text-2xl font-bold text-green-700 mb-3">Grupos de Alimentos</h2>
+              <h2 className="text-2xl font-bold text-green-700 mb-3">Food Groups</h2>
               <p className="text-gray-700 mb-6">
-                Descubre los cinco grupos principales de alimentos, sus beneficios para la salud,
-                ejemplos de cada grupo y las porciones recomendadas diarias.
+                Discover the five main food groups, their health benefits, examples of each group, and recommended daily portions.
               </p>
               <Button
                 onClick={() => setCurrentView('groups')}
                 className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3"
               >
-                Ver Grupos de Alimentos
+                View Food Groups
               </Button>
             </div>
           </Card>
@@ -110,24 +107,24 @@ export default function Nutrition() {
 
         {/* Educational Content */}
         <Card className="p-8 bg-white border-2 border-orange-200 mb-8">
-          <h3 className="text-2xl font-bold text-orange-700 mb-4">¿Por qué es importante una buena nutrición?</h3>
+          <h3 className="text-2xl font-bold text-orange-700 mb-4">Why is Good Nutrition Important?</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="p-4 bg-blue-50 rounded-lg">
-              <h4 className="font-bold text-blue-700 mb-2">💪 Energía</h4>
+              <h4 className="font-bold text-blue-700 mb-2">💪 Energy</h4>
               <p className="text-sm text-gray-700">
-                Los alimentos proporcionan la energía que necesitas para realizar tus actividades diarias.
+                Food provides the energy you need to perform your daily activities.
               </p>
             </div>
             <div className="p-4 bg-green-50 rounded-lg">
-              <h4 className="font-bold text-green-700 mb-2">🧬 Crecimiento</h4>
+              <h4 className="font-bold text-green-700 mb-2">🧬 Growth</h4>
               <p className="text-sm text-gray-700">
-                Las proteínas y otros nutrientes son esenciales para tu crecimiento y desarrollo.
+                Proteins and other nutrients are essential for your growth and development.
               </p>
             </div>
             <div className="p-4 bg-red-50 rounded-lg">
-              <h4 className="font-bold text-red-700 mb-2">🛡️ Salud</h4>
+              <h4 className="font-bold text-red-700 mb-2">🛡️ Health</h4>
               <p className="text-sm text-gray-700">
-                Una buena nutrición fortalece tu sistema inmunológico y previene enfermedades.
+                Good nutrition strengthens your immune system and prevents disease.
               </p>
             </div>
           </div>
@@ -140,13 +137,13 @@ export default function Nutrition() {
             variant="outline"
             className="border-gray-400 text-gray-700 hover:bg-gray-100"
           >
-            ← Volver al Inicio
+            ← Back to Home
           </Button>
           <Button
             onClick={handleModuleComplete}
             className="bg-green-600 hover:bg-green-700 text-white font-bold"
           >
-            Completar Módulo →
+            Complete Module →
           </Button>
         </div>
       </div>

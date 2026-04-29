@@ -55,17 +55,17 @@ export default function Workshop() {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">Workshop Final de Evaluación</h1>
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">Final Assessment Workshop</h1>
             <p className="text-lg text-gray-600">
-              Demuestra lo que has aprendido en todos los módulos
+              Demonstrate what you have learned in all modules
             </p>
           </div>
 
           {/* Instructions */}
           <Card className="p-8 bg-white border-2 border-purple-300 mb-8">
-            <h2 className="text-2xl font-bold text-purple-700 mb-4">Instrucciones</h2>
+            <h2 className="text-2xl font-bold text-purple-700 mb-4">Instructions</h2>
             <p className="text-gray-700 mb-4">
-              Este workshop evaluará tu comprensión de todos los temas que has estudiado:
+              This workshop will assess your understanding of all the topics you have studied:
             </p>
             <ul className="space-y-3 mb-6">
               {workshopData.sections.map((section, idx) => (
@@ -83,8 +83,7 @@ export default function Workshop() {
 
             <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500 mb-4">
               <p className="text-sm text-gray-700">
-                <strong>Nota:</strong> Necesitas obtener al menos <strong>{passingScore}%</strong> para aprobar
-                el workshop.
+                <strong>Note:</strong> You need to score at least <strong>{passingScore}%</strong> to pass the workshop.
               </p>
             </div>
 
@@ -92,18 +91,18 @@ export default function Workshop() {
               onClick={handleStartWorkshop}
               className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 text-lg"
             >
-              Iniciar Evaluación
+              Start Assessment
             </Button>
           </Card>
 
           {/* Tips */}
           <Card className="p-6 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-300">
-            <h3 className="font-bold text-yellow-700 mb-3">💡 Consejos para el Éxito:</h3>
+            <h3 className="font-bold text-yellow-700 mb-3">💡 Tips for Success:</h3>
             <ul className="space-y-2 text-sm text-gray-700">
-              <li>✓ Lee cuidadosamente cada pregunta o instrucción</li>
-              <li>✓ Tómate tu tiempo para pensar en las respuestas</li>
-              <li>✓ Revisa tu trabajo antes de finalizar</li>
-              <li>✓ Recuerda lo que aprendiste en cada módulo</li>
+              <li>✓ Read each question or instruction carefully</li>
+              <li>✓ Take your time to think about the answers</li>
+              <li>✓ Review your work before finishing</li>
+              <li>✓ Remember what you learned in each module</li>
             </ul>
           </Card>
         </div>
@@ -119,7 +118,7 @@ export default function Workshop() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Resultados del Workshop</h1>
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">Workshop Results</h1>
         </div>
 
         {/* Score Card */}
@@ -143,11 +142,11 @@ export default function Workshop() {
           <p className={`text-2xl font-bold mb-4 ${
             passed ? 'text-green-700' : 'text-red-700'
           }`}>
-            {passed ? '¡APROBADO!' : 'NO APROBADO'}
+            {passed ? 'PASSED!' : 'NOT PASSED'}
           </p>
 
           <p className="text-gray-700 mb-2">
-            Puntuación requerida: {passingScore}%
+            Required Score: {passingScore}%
           </p>
         </Card>
 
@@ -160,23 +159,31 @@ export default function Workshop() {
 
         {/* Detailed Scores */}
         <Card className="p-6 mb-8 bg-white border-2 border-gray-300">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Desglose de Puntuaciones</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Score Breakdown</h2>
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg border-l-4 border-purple-500">
-              <span className="font-bold text-gray-800">Juegos de Palabras</span>
+              <span className="font-bold text-gray-800">Word Games</span>
               <span className="text-2xl font-bold text-purple-600">{moduleScores.wordGames}%</span>
             </div>
             <div className="flex items-center justify-between p-4 bg-orange-50 rounded-lg border-l-4 border-orange-500">
-              <span className="font-bold text-gray-800">Nutrición</span>
+              <span className="font-bold text-gray-800">Nutrition</span>
               <span className="text-2xl font-bold text-orange-600">{moduleScores.nutrition}%</span>
             </div>
             <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-              <span className="font-bold text-gray-800">Sistema Nervioso</span>
+              <span className="font-bold text-gray-800">Nervous System</span>
               <span className="text-2xl font-bold text-blue-600">{moduleScores.nervousSystem}%</span>
             </div>
+            <div className="flex items-center justify-between p-4 bg-red-50 rounded-lg border-l-4 border-red-500">
+              <span className="font-bold text-gray-800">Eating Disorders</span>
+              <span className="text-2xl font-bold text-red-600">{moduleScores.eatingDisorders}%</span>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-pink-50 rounded-lg border-l-4 border-pink-500">
+              <span className="font-bold text-gray-800">CNS Diseases</span>
+              <span className="text-2xl font-bold text-pink-600">{moduleScores.cnsDisorders}%</span>
+            </div>
             <div className="flex items-center justify-between p-4 bg-indigo-50 rounded-lg border-l-4 border-indigo-500">
-              <span className="font-bold text-gray-800">Quiz Final</span>
-              <span className="text-2xl font-bold text-indigo-600">{moduleScores.finalQuiz}%</span>
+              <span className="font-bold text-gray-800">Biblical Integration</span>
+              <span className="text-2xl font-bold text-indigo-600">{moduleScores.biblicalIntegration}%</span>
             </div>
           </div>
         </Card>
@@ -184,19 +191,25 @@ export default function Workshop() {
         {/* Recommendations */}
         {!passed && (
           <Card className="p-6 mb-8 bg-yellow-50 border-2 border-yellow-400">
-            <h3 className="font-bold text-yellow-700 mb-3">📖 Recomendaciones:</h3>
+            <h3 className="font-bold text-yellow-700 mb-3">📖 Recommendations:</h3>
             <ul className="space-y-2 text-gray-700">
               {moduleScores.wordGames < passingScore && (
-                <li>• Revisa los juegos de palabras (Crucigrama, Sopa de Letras, Ahorcado)</li>
+                <li>• Review the word games (Crossword, Word Search, Hangman)</li>
               )}
               {moduleScores.nutrition < passingScore && (
-                <li>• Estudia más sobre nutrición y el plato balanceado</li>
+                <li>• Study more about nutrition and the balanced plate</li>
               )}
               {moduleScores.nervousSystem < passingScore && (
-                <li>• Repasa las partes y funciones del sistema nervioso central</li>
+                <li>• Review the parts and functions of the central nervous system</li>
               )}
-              {moduleScores.finalQuiz < passingScore && (
-                <li>• Intenta el quiz final nuevamente para mejorar tu comprensión</li>
+              {moduleScores.eatingDisorders < passingScore && (
+                <li>• Study eating disorders and their impact on health</li>
+              )}
+              {moduleScores.cnsDisorders < passingScore && (
+                <li>• Learn more about central nervous system diseases</li>
+              )}
+              {moduleScores.biblicalIntegration < passingScore && (
+                <li>• Review the biblical principles and their connection to health</li>
               )}
             </ul>
           </Card>
@@ -209,7 +222,7 @@ export default function Workshop() {
             variant="outline"
             className="border-gray-400 text-gray-700 hover:bg-gray-100"
           >
-            ← Volver al Inicio
+            ← Back to Home
           </Button>
           <Button
             onClick={handleRetry}
@@ -219,7 +232,13 @@ export default function Workshop() {
                 : 'bg-orange-600 hover:bg-orange-700'
             } text-white font-bold`}
           >
-            {passed ? 'Explorar de Nuevo' : 'Intentar de Nuevo'}
+            {passed ? 'Explore Again' : 'Try Again'}
+          </Button>
+          <Button
+            onClick={() => setLocation('/results')}
+            className="bg-green-600 hover:bg-green-700 text-white font-bold"
+          >
+            View Certificate →
           </Button>
         </div>
 
@@ -227,12 +246,12 @@ export default function Workshop() {
         {passed && (
           <Card className="mt-8 p-8 bg-gradient-to-br from-yellow-100 to-orange-100 border-4 border-yellow-400 text-center">
             <div className="text-5xl mb-4">🏆</div>
-            <h3 className="text-2xl font-bold text-yellow-800 mb-2">¡Certificado de Logro!</h3>
+            <h3 className="text-2xl font-bold text-yellow-800 mb-2">Achievement Certificate!</h3>
             <p className="text-gray-700 mb-4">
-              Has completado exitosamente el workshop educativo de Ciencias y Nutrición.
+              You have successfully completed the Health, Science & Faith educational workshop.
             </p>
             <p className="text-sm text-gray-600">
-              Fecha: {new Date().toLocaleDateString('es-ES')}
+              Date: {new Date().toLocaleDateString('en-US')}
             </p>
           </Card>
         )}
