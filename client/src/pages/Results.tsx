@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useUser } from '@/contexts/UserContext';
 import { useLocation } from 'wouter';
 import { downloadCertificate, CertificateData } from '@/lib/pdf-generator';
-import { generateTelegramMessage, openTelegramShare, copyToClipboard } from '@/lib/telegram-utils';
+import { generateTelegramMessage, openTelegramShare, copyToClipboard, sendToTelegram } from '@/lib/telegram-utils';
 import { Copy, Download, Send } from 'lucide-react';
 
 export default function Results() {
@@ -64,6 +64,21 @@ export default function Results() {
       setTimeout(() => setCopied(false), 2000);
     }
   };
+
+  const [sentToTeacher, setSentToTeacher] = useState<'pending' | 'sent' | 'failed' | null>(null);
+
+  useEffect(() => {
+    if (!showNameInput && sentToTeacher === null) {
+      const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+      const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
+      if (botToken && chatId) {
+        setSentToTeacher('pending');
+        sendToTelegram(botToken, chatId, telegramMessage).then((ok) => {
+          setSentToTeacher(ok ? 'sent' : 'failed');
+        });
+      }
+    }
+  }, [showNameInput]);
 
   const handleStartOver = () => {
     setLocation('/');
@@ -211,6 +226,15 @@ export default function Results() {
             <p className="text-xs text-green-600 font-semibold mt-2">✓ Copied to clipboard!</p>
           )}
         </Card>
+
+        {/* Teacher notification status */}
+        {sentToTeacher && (
+          <div className={`text-center text-sm font-semibold mb-4 ${sentToTeacher === 'sent' ? 'text-green-600' : sentToTeacher === 'failed' ? 'text-red-500' : 'text-gray-400'}`}>
+            {sentToTeacher === 'pending' && '⏳ Sending results to teacher...'}
+            {sentToTeacher === 'sent' && '✓ Results sent to teacher'}
+            {sentToTeacher === 'failed' && '⚠ Could not send results to teacher'}
+          </div>
+        )}
 
         {/* Navigation */}
         <div className="flex gap-4 justify-center">
