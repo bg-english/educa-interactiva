@@ -62,28 +62,33 @@ export const sendToTelegram = async (
   }
 };
 
-export const sendDocumentToTelegram = async (
+export const sendDocumentToTelegram = (
   botToken: string,
   chatId: string,
   blob: Blob,
   filename: string,
   caption: string
 ): Promise<boolean> => {
-  try {
-    const form = new FormData();
-    form.append('chat_id', chatId);
-    form.append('document', blob, filename);
-    form.append('caption', caption);
-    form.append('parse_mode', 'Markdown');
-    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendDocument`, {
-      method: 'POST',
-      body: form,
-    });
-    return response.ok;
-  } catch (error) {
-    console.error('Error sending document to Telegram:', error);
-    return false;
-  }
+  return new Promise((resolve) => {
+    try {
+      const form = new FormData();
+      form.append('chat_id', chatId);
+      // Explicitly create File from Blob for Safari compatibility
+      const file = new File([blob], filename, { type: 'application/pdf' });
+      form.append('document', file);
+      form.append('caption', caption);
+      form.append('parse_mode', 'Markdown');
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `https://api.telegram.org/bot${botToken}/sendDocument`);
+      xhr.onload = () => resolve(xhr.status >= 200 && xhr.status < 300);
+      xhr.onerror = () => resolve(false);
+      xhr.send(form);
+    } catch (error) {
+      console.error('Error sending document to Telegram:', error);
+      resolve(false);
+    }
+  });
 };
 
 export const openTelegramShare = (message: string): void => {

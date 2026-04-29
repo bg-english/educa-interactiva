@@ -185,9 +185,18 @@ export const generateCertificatePDFBlob = (data: CertificateData): Blob => {
   doc.line(30, pageHeight - 25, 70, pageHeight - 25);
   doc.setFontSize(9);
   doc.text('EducaInteractiva', 50, pageHeight - 20, { align: 'center' });
-  return doc.output('blob');
+  // Use arraybuffer + explicit MIME type for Safari/iOS compatibility
+  const buffer = doc.output('arraybuffer');
+  return new Blob([buffer], { type: 'application/pdf' });
 };
 
 export const downloadCertificate = (data: CertificateData): void => {
-  generateCertificatePDF(data);
+  const blob = generateCertificatePDFBlob(data);
+  const filename = `EducaInteractiva_Certificate_${data.studentName.replace(/\s+/g, '_')}_${new Date().getTime()}.pdf`;
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 };
