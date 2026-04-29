@@ -11,7 +11,7 @@ export default function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     const student = findStudentByEmail(email);
     if (!student) {
       setError('Email not found. Please check and try again.');
@@ -19,16 +19,16 @@ export default function Login() {
     }
 
     setLoading(true);
-    setCurrentStudent(student);
 
     const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
     const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
     if (botToken && chatId && student.group !== 'Teacher') {
       const msg = `📚 *${student.name}* (${student.group}) has logged in to the workshop.`;
-      await sendToTelegram(botToken, chatId, msg);
+      sendToTelegram(botToken, chatId, msg).catch(() => {});
     }
 
-    setLoading(false);
+    // Navigate after firing notification (no await — avoids unmounted state update)
+    setCurrentStudent(student);
   };
 
   return (

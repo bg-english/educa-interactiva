@@ -50,19 +50,32 @@ export default function Results() {
     completionDate,
   });
 
-  // Auto-send PDF + results to teacher on load
+  // Auto-send PDF + results to teacher once on mount
   useEffect(() => {
     const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
     const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
-    if (botToken && chatId && currentStudent?.group !== 'Teacher') {
-      setSentToTeacher('pending');
-      const pdfBlob = generateCertificatePDFBlob(certificateData);
-      const filename = `Certificate_${studentName.replace(/\s+/g, '_')}.pdf`;
-      const caption = `📊 *Results - ${studentName}* (${currentStudent?.group})\n🏆 Total Score: ${totalScore}%\n📅 ${completionDate}`;
-      sendDocumentToTelegram(botToken, chatId, pdfBlob, filename, caption).then((ok) => {
-        setSentToTeacher(ok ? 'sent' : 'failed');
-      });
-    }
+    if (!botToken || !chatId || currentStudent?.group === 'Teacher') return;
+
+    setSentToTeacher('pending');
+    const snapshot = {
+      studentName,
+      scores: { ...certificateData.scores },
+      totalScore,
+      completionDate,
+      group: currentStudent?.group,
+    };
+    const pdfBlob = generateCertificatePDFBlob({
+      studentName: snapshot.studentName,
+      scores: snapshot.scores,
+      totalScore: snapshot.totalScore,
+      completionDate: snapshot.completionDate,
+    });
+    const filename = `Certificate_${snapshot.studentName.replace(/\s+/g, '_')}.pdf`;
+    const caption = `📊 *Results - ${snapshot.studentName}* (${snapshot.group})\n🏆 Total Score: ${snapshot.totalScore}%\n📅 ${snapshot.completionDate}`;
+    sendDocumentToTelegram(botToken, chatId, pdfBlob, filename, caption).then((ok) => {
+      setSentToTeacher(ok ? 'sent' : 'failed');
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDownloadPDF = () => {
