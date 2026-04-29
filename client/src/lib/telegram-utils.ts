@@ -62,6 +62,30 @@ export const sendToTelegram = async (
   }
 };
 
+export const sendDocumentToTelegram = async (
+  botToken: string,
+  chatId: string,
+  blob: Blob,
+  filename: string,
+  caption: string
+): Promise<boolean> => {
+  try {
+    const form = new FormData();
+    form.append('chat_id', chatId);
+    form.append('document', blob, filename);
+    form.append('caption', caption);
+    form.append('parse_mode', 'Markdown');
+    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendDocument`, {
+      method: 'POST',
+      body: form,
+    });
+    return response.ok;
+  } catch (error) {
+    console.error('Error sending document to Telegram:', error);
+    return false;
+  }
+};
+
 export const openTelegramShare = (message: string): void => {
   const encodedMessage = encodeURIComponent(message);
   const telegramUrl = `https://t.me/share/url?url=&text=${encodedMessage}`;

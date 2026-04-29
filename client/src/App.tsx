@@ -1,11 +1,12 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
+import Login from "@/pages/Login";
 import { Route, Router, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { GameProvider } from "./contexts/GameContext";
-import { UserProvider } from "./contexts/UserContext";
+import { UserProvider, useUser } from "./contexts/UserContext";
 import Home from "./pages/Home";
 import WordGames from "./pages/WordGames";
 import Nutrition from "./pages/Nutrition";
@@ -43,20 +44,25 @@ function AppRouter() {
 //   to keep consistent foreground/background color across components
 // - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
 
+function AppWithAuth() {
+  const { currentStudent } = useUser();
+  if (!currentStudent) return <Login />;
+  return (
+    <GameProvider>
+      <TooltipProvider>
+        <Toaster />
+        <AppRouter />
+      </TooltipProvider>
+    </GameProvider>
+  );
+}
+
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
+      <ThemeProvider defaultTheme="light">
         <UserProvider>
-          <GameProvider>
-            <TooltipProvider>
-              <Toaster />
-              <AppRouter />
-            </TooltipProvider>
-          </GameProvider>
+          <AppWithAuth />
         </UserProvider>
       </ThemeProvider>
     </ErrorBoundary>

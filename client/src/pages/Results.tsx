@@ -3,16 +3,17 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useUser } from '@/contexts/UserContext';
 import { useLocation } from 'wouter';
-import { downloadCertificate, CertificateData } from '@/lib/pdf-generator';
-import { generateTelegramMessage, openTelegramShare, copyToClipboard, sendToTelegram } from '@/lib/telegram-utils';
+import { downloadCertificate, generateCertificatePDFBlob, CertificateData } from '@/lib/pdf-generator';
+import { generateTelegramMessage, openTelegramShare, copyToClipboard, sendDocumentToTelegram } from '@/lib/telegram-utils';
 import { Copy, Download, Send } from 'lucide-react';
 
 export default function Results() {
-  const { moduleScores, completedModules } = useUser();
+  const { moduleScores, currentStudent } = useUser();
   const [, setLocation] = useLocation();
   const [copied, setCopied] = useState(false);
-  const [studentName, setStudentName] = useState('');
-  const [showNameInput, setShowNameInput] = useState(true);
+  const [sentToTeacher, setSentToTeacher] = useState<'pending' | 'sent' | 'failed' | null>(null);
+
+  const studentName = currentStudent?.name || 'Student';
 
   const calculateTotalScore = (): number => {
     const scores = Object.values(moduleScores);
@@ -25,11 +26,11 @@ export default function Results() {
   const completionDate = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   });
 
   const certificateData: CertificateData = {
-    studentName: studentName || 'Student',
+    studentName,
     scores: {
       wordGames: moduleScores.wordGames || 0,
       nutrition: moduleScores.nutrition || 0,
@@ -43,11 +44,26 @@ export default function Results() {
   };
 
   const telegramMessage = generateTelegramMessage({
-    studentName: studentName || 'Student',
+    studentName,
     scores: certificateData.scores,
     totalScore,
     completionDate,
   });
+
+  // Auto-send PDF + results to teacher on load
+  useEffect(() => {
+    const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+    const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
+    if (botToken && chatId && currentStudent?.group !== 'Teacher') {
+      setSentToTeacher('pending');
+      const pdfBlob = generateCertificatePDFBlob(certificateData);
+      const filename = `Certificate_${studentName.replace(/\s+/g, '_')}.pdf`;
+      const caption = `📊 *Results - ${studentName}* (${currentStudent?.group})\n🏆 Total Score: ${totalScore}%\n📅 ${completionDate}`;
+      sendDocumentToTelegram(botToken, chatId, pdfBlob, filename, caption).then((ok) => {
+        setSentToTeacher(ok ? 'sent' : 'failed');
+      });
+    }
+  }, []);
 
   const handleDownloadPDF = () => {
     downloadCertificate(certificateData);
@@ -65,61 +81,9 @@ export default function Results() {
     }
   };
 
-  const [sentToTeacher, setSentToTeacher] = useState<'pending' | 'sent' | 'failed' | null>(null);
-
-  useEffect(() => {
-    if (!showNameInput && sentToTeacher === null) {
-      const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
-      const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
-      if (botToken && chatId) {
-        setSentToTeacher('pending');
-        sendToTelegram(botToken, chatId, telegramMessage).then((ok) => {
-          setSentToTeacher(ok ? 'sent' : 'failed');
-        });
-      }
-    }
-  }, [showNameInput]);
-
   const handleStartOver = () => {
     setLocation('/');
   };
-
-  if (showNameInput) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-4 flex items-center justify-center">
-        <Card className="p-8 bg-white border-2 border-blue-300 max-w-md w-full">
-          <div className="text-center mb-6">
-            <div className="text-6xl mb-4">🎓</div>
-            <h2 className="text-2xl font-bold text-blue-700">Congratulations!</h2>
-            <p className="text-gray-600 mt-2">You've completed the workshop!</p>
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Enter your name for the certificate:
-              </label>
-              <input
-                type="text"
-                value={studentName}
-                onChange={(e) => setStudentName(e.target.value)}
-                placeholder="Your full name"
-                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-              />
-            </div>
-
-            <Button
-              onClick={() => setShowNameInput(false)}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3"
-              disabled={!studentName.trim()}
-            >
-              Continue →
-            </Button>
-          </div>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-4">
@@ -129,6 +93,9 @@ export default function Results() {
           <div className="text-6xl mb-4">🏆</div>
           <h1 className="text-4xl font-bold text-blue-700 mb-2">Workshop Complete!</h1>
           <p className="text-lg text-gray-600">Excellent work, {studentName}!</p>
+          {currentStudent?.group && (
+            <p className="text-sm text-gray-400">{currentStudent.group}</p>
+          )}
         </div>
 
         {/* Score Summary */}
@@ -179,14 +146,11 @@ export default function Results() {
             <p>
               Through this workshop, you've learned about nutrition, the nervous system, eating disorders, and CNS diseases. You've also explored how biblical principles guide us toward health, compassion, and community care. Remember that taking care of your body is an act of worship and stewardship.
             </p>
-            <p>
-              As members of Christ's body, we are called to support one another, especially those facing health challenges. Use what you've learned to make healthy choices and to show compassion to others.
-            </p>
           </div>
         </Card>
 
         {/* Action Buttons */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <Button
             onClick={handleDownloadPDF}
             className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 flex items-center justify-center gap-2"
@@ -205,7 +169,7 @@ export default function Results() {
         </div>
 
         {/* Copy Message */}
-        <Card className="p-4 bg-gray-50 border-2 border-gray-300 mb-8">
+        <Card className="p-4 bg-gray-50 border-2 border-gray-300 mb-4">
           <div className="flex gap-2">
             <div className="flex-1">
               <p className="text-xs font-semibold text-gray-600 mb-2">Telegram Message:</p>
@@ -213,25 +177,18 @@ export default function Results() {
                 {telegramMessage}
               </div>
             </div>
-            <Button
-              onClick={handleCopyMessage}
-              variant="outline"
-              className="self-end"
-              title="Copy message"
-            >
+            <Button onClick={handleCopyMessage} variant="outline" className="self-end" title="Copy message">
               <Copy size={20} />
             </Button>
           </div>
-          {copied && (
-            <p className="text-xs text-green-600 font-semibold mt-2">✓ Copied to clipboard!</p>
-          )}
+          {copied && <p className="text-xs text-green-600 font-semibold mt-2">✓ Copied to clipboard!</p>}
         </Card>
 
         {/* Teacher notification status */}
         {sentToTeacher && (
           <div className={`text-center text-sm font-semibold mb-4 ${sentToTeacher === 'sent' ? 'text-green-600' : sentToTeacher === 'failed' ? 'text-red-500' : 'text-gray-400'}`}>
             {sentToTeacher === 'pending' && '⏳ Sending results to teacher...'}
-            {sentToTeacher === 'sent' && '✓ Results sent to teacher'}
+            {sentToTeacher === 'sent' && '✓ Results and certificate sent to teacher'}
             {sentToTeacher === 'failed' && '⚠ Could not send results to teacher'}
           </div>
         )}

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { Student } from '@/lib/students';
 
 interface ModuleScore {
   wordGames: number;
@@ -15,6 +16,8 @@ interface UserContextType {
   moduleScores: ModuleScore;
   completedModules: string[];
   userAnswers: Record<string, any>;
+  currentStudent: Student | null;
+  setCurrentStudent: (student: Student | null) => void;
   setModuleScore: (module: keyof ModuleScore, score: number) => void;
   addCompletedModule: (module: string) => void;
   setUserAnswer: (key: string, answer: any) => void;
@@ -37,6 +40,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const [completedModules, setCompletedModules] = useState<string[]>([]);
   const [userAnswers, setUserAnswersState] = useState<Record<string, any>>({});
+  const [currentStudent, setCurrentStudent] = useState<Student | null>(null);
 
   const setModuleScore = (module: keyof ModuleScore, score: number) => {
     setModuleScores(prev => ({ ...prev, [module]: score }));
@@ -78,6 +82,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         moduleScores,
         completedModules,
         userAnswers,
+        currentStudent,
+        setCurrentStudent,
         setModuleScore,
         addCompletedModule,
         setUserAnswer,
