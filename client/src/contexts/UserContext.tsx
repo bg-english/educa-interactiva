@@ -4,6 +4,9 @@ interface ModuleScore {
   wordGames: number;
   nutrition: number;
   nervousSystem: number;
+  eatingDisorders: number;
+  cnsDisorders: number;
+  biblicalIntegration: number;
   finalQuiz: number;
 }
 
@@ -26,6 +29,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     wordGames: 0,
     nutrition: 0,
     nervousSystem: 0,
+    eatingDisorders: 0,
+    cnsDisorders: 0,
+    biblicalIntegration: 0,
     finalQuiz: 0,
   });
 
@@ -56,6 +62,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       wordGames: 0,
       nutrition: 0,
       nervousSystem: 0,
+      eatingDisorders: 0,
+      cnsDisorders: 0,
+      biblicalIntegration: 0,
       finalQuiz: 0,
     });
     setCompletedModules([]);

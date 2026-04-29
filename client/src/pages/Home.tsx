@@ -5,42 +5,90 @@ import { useUser } from '@/contexts/UserContext';
 import { useLocation } from 'wouter';
 
 export default function Home() {
-  const { getTotalScore, completedModules } = useUser();
+  const { getTotalScore, completedModules, moduleScores } = useUser();
   const [, setLocation] = useLocation();
   const totalScore = getTotalScore();
 
   const modules = [
     {
       id: 'wordGames',
-      title: 'Juegos de Palabras',
-      description: 'Crucigrama, Sopa de Letras y Ahorcado',
+      title: 'Word Games',
+      description: 'Crossword, Word Search & Hangman',
       icon: '🎮',
       color: 'from-green-100 to-emerald-100',
       borderColor: 'border-green-500',
       textColor: 'text-green-700',
       route: '/word-games',
+      score: moduleScores.wordGames,
     },
     {
       id: 'nutrition',
-      title: 'Nutrición',
-      description: 'Plato Balanceado y Grupos de Alimentos',
+      title: 'Nutrition',
+      description: 'Balanced Plate & Food Groups',
       icon: '🍽️',
-      color: 'from-orange-100 to-red-100',
+      color: 'from-orange-100 to-yellow-100',
       borderColor: 'border-orange-500',
       textColor: 'text-orange-700',
       route: '/nutrition',
+      score: moduleScores.nutrition,
     },
     {
       id: 'nervousSystem',
-      title: 'Sistema Nervioso',
-      description: 'Diagrama Interactivo y Quiz',
+      title: 'Nervous System',
+      description: 'Interactive Diagram & Quiz',
       icon: '🧠',
-      color: 'from-blue-100 to-indigo-100',
+      color: 'from-blue-100 to-cyan-100',
       borderColor: 'border-blue-500',
       textColor: 'text-blue-700',
       route: '/nervous-system',
+      score: moduleScores.nervousSystem,
+    },
+    {
+      id: 'eatingDisorders',
+      title: 'Eating Disorders',
+      description: 'Understanding Health & Faith',
+      icon: '🚫',
+      color: 'from-red-100 to-pink-100',
+      borderColor: 'border-red-500',
+      textColor: 'text-red-700',
+      route: '/eating-disorders',
+      score: moduleScores.eatingDisorders,
+    },
+    {
+      id: 'cnsDisorders',
+      title: 'CNS Diseases',
+      description: 'Compassion & Community Care',
+      icon: '🏥',
+      color: 'from-purple-100 to-indigo-100',
+      borderColor: 'border-purple-500',
+      textColor: 'text-purple-700',
+      route: '/cns-disorders',
+      score: moduleScores.cnsDisorders,
+    },
+    {
+      id: 'biblicalIntegration',
+      title: 'Biblical Integration',
+      description: 'Health, Faith & Community',
+      icon: '📖',
+      color: 'from-amber-100 to-orange-100',
+      borderColor: 'border-amber-500',
+      textColor: 'text-amber-700',
+      route: '/biblical-integration',
+      score: moduleScores.biblicalIntegration,
     },
   ];
+
+  const handleModuleClick = (route: string) => {
+    setLocation(route);
+  };
+
+  const handleWorkshop = () => {
+    setLocation('/workshop');
+  };
+
+  const handleResults = () => {
+    setLocation('/results');
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
@@ -49,74 +97,54 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-4xl font-bold mb-2">EducaInteractiva</h1>
-              <p className="text-blue-100 text-lg">
-                Workshop Educativo de Ciencias y Nutrición
-              </p>
+              <h1 className="text-4xl font-bold">EducaInteractiva</h1>
+              <p className="text-blue-100 text-lg">Health, Science & Faith Workshop</p>
             </div>
             <div className="text-right">
-              <p className="text-sm text-blue-100 mb-1">Puntuación Total</p>
-              <p className="text-4xl font-bold">{totalScore}%</p>
+              <p className="text-blue-100 text-sm">Total Score</p>
+              <p className="text-5xl font-bold">{totalScore}%</p>
             </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto p-4 py-12">
+      <main className="max-w-6xl mx-auto px-4 py-12">
         {/* Welcome Section */}
-        <div className="mb-12">
-          <Card className="p-8 bg-white border-2 border-blue-300">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Bienvenido al Workshop</h2>
-            <p className="text-gray-700 mb-4">
-              Este es un espacio interactivo donde puedes aprender sobre ciencias y nutrición a través
-              de juegos, simuladores y actividades educativas. Cada módulo está diseñado para ayudarte
-              a comprender conceptos importantes de manera divertida y práctica.
-            </p>
-            <p className="text-gray-700">
-              Completa todos los módulos y realiza el workshop final de evaluación para demostrar
-              lo que has aprendido. ¡Buena suerte!
-            </p>
-          </Card>
-        </div>
+        <Card className="p-8 bg-white border-2 border-blue-300 mb-12 shadow-lg">
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">Welcome to the Workshop</h2>
+          <p className="text-lg text-gray-700 mb-4">
+            This is an interactive space where you'll learn about health, nutrition, the nervous system, and biblical principles of caring for our bodies. Each module is designed to help you understand important concepts through games, simulations, and educational activities.
+          </p>
+          <p className="text-lg text-gray-700">
+            Complete all modules and take the final workshop assessment to demonstrate what you've learned. Remember: "Your body is a temple of the Holy Spirit" (1 Corinthians 6:19).
+          </p>
+        </Card>
 
         {/* Modules Grid */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">Módulos Disponibles</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {modules.map(module => (
+          <h2 className="text-3xl font-bold text-gray-800 mb-8">Available Modules</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {modules.map((module) => (
               <Card
                 key={module.id}
                 className={`p-6 bg-gradient-to-br ${module.color} border-2 ${module.borderColor} hover:shadow-lg transition-shadow cursor-pointer`}
-                onClick={() => setLocation(module.route)}
+                onClick={() => handleModuleClick(module.route)}
               >
                 <div className="text-center">
                   <div className="text-5xl mb-4">{module.icon}</div>
-                  <h3 className={`text-2xl font-bold ${module.textColor} mb-2`}>
-                    {module.title}
-                  </h3>
-                  <p className="text-gray-700 mb-4 text-sm">
-                    {module.description}
-                  </p>
-
-                  {/* Completion Status */}
-                  <div className="mb-4">
-                    {completedModules.includes(module.id) ? (
-                      <div className="inline-block px-3 py-1 bg-green-200 text-green-700 rounded-full text-sm font-bold">
-                        ✓ Completado
-                      </div>
-                    ) : (
-                      <div className="inline-block px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm font-bold">
-                        Por Completar
-                      </div>
-                    )}
-                  </div>
-
+                  <h3 className={`text-2xl font-bold ${module.textColor} mb-2`}>{module.title}</h3>
+                  <p className="text-gray-700 mb-4">{module.description}</p>
+                  {module.score > 0 && (
+                    <div className="mb-4 p-2 bg-white rounded-lg">
+                      <p className="text-sm font-semibold text-gray-600">Score: {module.score}%</p>
+                    </div>
+                  )}
                   <Button
-                    onClick={() => setLocation(module.route)}
-                    className={`w-full ${module.textColor} bg-white border-2 ${module.borderColor} hover:bg-gray-50 font-bold`}
+                    onClick={() => handleModuleClick(module.route)}
+                    className={`w-full ${module.textColor.replace('text-', 'bg-').replace('-700', '-600')} hover:opacity-90 text-white font-bold`}
                   >
-                    Acceder →
+                    Access Module →
                   </Button>
                 </div>
               </Card>
@@ -125,84 +153,86 @@ export default function Home() {
         </div>
 
         {/* Progress Section */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">Tu Progreso</h2>
-          <Card className="p-6 bg-white border-2 border-gray-300">
-            <div className="space-y-4">
-              {modules.map(module => (
-                <div key={module.id}>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-semibold text-gray-800">{module.title}</span>
-                    <span className={`font-bold ${
-                      completedModules.includes(module.id)
-                        ? 'text-green-600'
-                        : 'text-gray-600'
-                    }`}>
-                      {completedModules.includes(module.id) ? '✓ Completado' : 'Pendiente'}
-                    </span>
-                  </div>
-                  <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full transition-all duration-300 ${
-                        completedModules.includes(module.id)
-                          ? 'bg-green-500'
-                          : 'bg-gray-400'
-                      }`}
-                      style={{
-                        width: completedModules.includes(module.id) ? '100%' : '0%',
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
+        <Card className="p-8 bg-white border-2 border-gray-300 mb-12 shadow-lg">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Progress</h2>
+          <div className="space-y-3">
+            {modules.map((module) => (
+              <div key={module.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <span className="font-semibold text-gray-700">{module.title}</span>
+                <span className={`font-bold ${module.score > 0 ? 'text-green-600' : 'text-gray-500'}`}>
+                  {module.score > 0 ? `${module.score}%` : 'Pending'}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* Action Buttons */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          <Card className="p-8 bg-gradient-to-br from-blue-500 to-purple-500 text-white hover:shadow-lg transition-shadow">
+            <div className="text-center">
+              <div className="text-5xl mb-4">📋</div>
+              <h3 className="text-2xl font-bold mb-3">Final Workshop</h3>
+              <p className="mb-6">
+                Ready for the comprehensive assessment? Complete all modules first to unlock the final workshop.
+              </p>
+              <Button
+                onClick={handleWorkshop}
+                disabled={completedModules.length < modules.length}
+                className="w-full bg-white text-blue-600 hover:bg-gray-100 font-bold py-3 disabled:opacity-50"
+              >
+                Start Final Assessment →
+              </Button>
+            </div>
+          </Card>
+
+          <Card className="p-8 bg-gradient-to-br from-green-500 to-emerald-500 text-white hover:shadow-lg transition-shadow">
+            <div className="text-center">
+              <div className="text-5xl mb-4">🏆</div>
+              <h3 className="text-2xl font-bold mb-3">View Results</h3>
+              <p className="mb-6">
+                See your certificate, download your PDF, and share your achievement on Telegram.
+              </p>
+              <Button
+                onClick={handleResults}
+                className="w-full bg-white text-green-600 hover:bg-gray-100 font-bold py-3"
+              >
+                View Certificate →
+              </Button>
             </div>
           </Card>
         </div>
 
-        {/* Workshop Button */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">¿Listo para la Evaluación?</h2>
-          <Button
-            onClick={() => setLocation('/workshop')}
-            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-8 text-lg rounded-lg shadow-lg"
-          >
-            Ir al Workshop Final →
-          </Button>
-          <p className="text-gray-600 mt-4 text-sm">
-            Completa todos los módulos antes de hacer el workshop final
-          </p>
-        </div>
-
         {/* Tips Section */}
-        <Card className="p-6 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-400">
-          <h3 className="text-xl font-bold text-yellow-800 mb-4">💡 Consejos para Aprender Mejor</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex gap-3">
-              <span className="text-2xl">📚</span>
+        <Card className="p-8 bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-300">
+          <h2 className="text-2xl font-bold text-amber-700 mb-6">💡 Tips for Better Learning</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex gap-4">
+              <div className="text-3xl">📚</div>
               <div>
-                <p className="font-semibold text-gray-800">Tómate tu tiempo</p>
-                <p className="text-sm text-gray-700">No hay prisa. Aprende a tu propio ritmo.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Take Your Time</h4>
+                <p className="text-gray-700">There's no rush. Learn at your own pace and understand each concept thoroughly.</p>
               </div>
             </div>
-            <div className="flex gap-3">
-              <span className="text-2xl">🎯</span>
+            <div className="flex gap-4">
+              <div className="text-3xl">🎯</div>
               <div>
-                <p className="font-semibold text-gray-800">Sé consistente</p>
-                <p className="text-sm text-gray-700">Practica regularmente para mejores resultados.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Be Consistent</h4>
+                <p className="text-gray-700">Practice regularly for better results and deeper understanding.</p>
               </div>
             </div>
-            <div className="flex gap-3">
-              <span className="text-2xl">🔄</span>
+            <div className="flex gap-4">
+              <div className="text-3xl">🔄</div>
               <div>
-                <p className="font-semibold text-gray-800">Repite los módulos</p>
-                <p className="text-sm text-gray-700">Puedes hacer los módulos varias veces.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Repeat Modules</h4>
+                <p className="text-gray-700">You can complete modules multiple times to improve your scores.</p>
               </div>
             </div>
-            <div className="flex gap-3">
-              <span className="text-2xl">🏆</span>
+            <div className="flex gap-4">
+              <div className="text-3xl">🏆</div>
               <div>
-                <p className="font-semibold text-gray-800">Celebra tus logros</p>
-                <p className="text-sm text-gray-700">Cada paso es un progreso hacia el éxito.</p>
+                <h4 className="font-bold text-gray-800 mb-1">Celebrate Progress</h4>
+                <p className="text-gray-700">Every step is progress toward success and personal growth.</p>
               </div>
             </div>
           </div>
@@ -211,9 +241,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="bg-gray-800 text-gray-300 py-6 px-4 mt-12 text-center">
-        <p className="text-sm">
-          EducaInteractiva © 2026 | Un espacio para aprender ciencias y nutrición de forma interactiva
-        </p>
+        <p>© 2026 EducaInteractiva. All rights reserved. | "Your body is a temple of the Holy Spirit" - 1 Corinthians 6:19</p>
       </footer>
     </div>
   );

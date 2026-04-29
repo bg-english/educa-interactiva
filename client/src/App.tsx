@@ -10,7 +10,11 @@ import Home from "./pages/Home";
 import WordGames from "./pages/WordGames";
 import Nutrition from "./pages/Nutrition";
 import NervousSystem from "./pages/NervousSystem";
+import EatingDisorders from "./pages/EatingDisorders";
+import CNSDiseases from "./pages/CNSDiseases";
+import BiblicalIntegration from "./pages/BiblicalIntegration";
 import Workshop from "./pages/Workshop";
+import Results from "./pages/Results";
 
 
 function Router() {
@@ -20,7 +24,11 @@ function Router() {
       <Route path={"/word-games"} component={WordGames} />
       <Route path={"/nutrition"} component={Nutrition} />
       <Route path={"/nervous-system"} component={NervousSystem} />
+      <Route path={"/eating-disorders"} component={EatingDisorders} />
+      <Route path={"/cns-disorders"} component={CNSDiseases} />
+      <Route path={"/biblical-integration"} component={BiblicalIntegration} />
       <Route path={"/workshop"} component={Workshop} />
+      <Route path={"/results"} component={Results} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
