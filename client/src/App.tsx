@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Router, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { GameProvider } from "./contexts/GameContext";
@@ -17,22 +17,24 @@ import Workshop from "./pages/Workshop";
 import Results from "./pages/Results";
 
 
-function Router() {
+function AppRouter() {
   return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/word-games"} component={WordGames} />
-      <Route path={"/nutrition"} component={Nutrition} />
-      <Route path={"/nervous-system"} component={NervousSystem} />
-      <Route path={"/eating-disorders"} component={EatingDisorders} />
-      <Route path={"/cns-disorders"} component={CNSDiseases} />
-      <Route path={"/biblical-integration"} component={BiblicalIntegration} />
-      <Route path={"/workshop"} component={Workshop} />
-      <Route path={"/results"} component={Results} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
+    <Router base={import.meta.env.BASE_URL}>
+      <Switch>
+        <Route path={"/"} component={Home} />
+        <Route path={"/word-games"} component={WordGames} />
+        <Route path={"/nutrition"} component={Nutrition} />
+        <Route path={"/nervous-system"} component={NervousSystem} />
+        <Route path={"/eating-disorders"} component={EatingDisorders} />
+        <Route path={"/cns-disorders"} component={CNSDiseases} />
+        <Route path={"/biblical-integration"} component={BiblicalIntegration} />
+        <Route path={"/workshop"} component={Workshop} />
+        <Route path={"/results"} component={Results} />
+        <Route path={"/404"} component={NotFound} />
+        {/* Final fallback route */}
+        <Route component={NotFound} />
+      </Switch>
+    </Router>
   );
 }
 
@@ -52,7 +54,7 @@ function App() {
           <GameProvider>
             <TooltipProvider>
               <Toaster />
-              <Router />
+              <AppRouter />
             </TooltipProvider>
           </GameProvider>
         </UserProvider>
